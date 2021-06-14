@@ -2,8 +2,9 @@
 $servername = "localhost";
 $username = "gesab001";
 $password = "ch5t8k4u";
-$dbname = "myDB";
-
+$dbname = $_GET['dbname'];
+$tablename = $_GET['tablename'];
+$sqlcommand = $_GET['command'];
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
@@ -19,12 +20,11 @@ lastname VARCHAR(30) NOT NULL,
 email VARCHAR(50),
 reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
-
+$sql = $sqlcommand;
 if ($conn->query($sql) === TRUE) {
-  echo "Table MyGuests created successfully";
+  echo "Table " . $tablename ." created successfully";
 } else {
   echo "Error creating table: " . $conn->error;
 }
-
 $conn->close();
 ?>
