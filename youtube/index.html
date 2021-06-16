@@ -1,14 +1,51 @@
-<!DOCTYPE HTML>
-<html>  
+<!DOCTYPE html>
+<html>
 <body>
 
-<form action="download.php" method="get">
-youtube url: <input type="text" name="videoId"><br>
-save as: <input type="text" name="filename"><br>
-<input type="submit" value="download">
 
-</form>
+
+<input id="videoId" type="text">
+<input id="filename" type="text">
+<button onclick="download()">Download</button>
+<div id="filesize"></div>
+<script>
+var myVar;
+var filename;
+function checkDownloadProgress() {
+  myVar = setInterval(checkFileSize, 1000);
+}
+
+function checkFileSize() {
+   filename = document.getElementById("filename").value;
+
+   var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+
+         document.getElementById("filesize").innerHTML = this.responseText;
+
+      }
+    };
+    xmlhttp.open("GET", "checkfilesize.php?filename="+filename, true);
+    xmlhttp.send();
+}
+
+function download() {
+   filename = document.getElementById("filename").value;
+   var videoId = document.getElementById("videoId").value;
+   var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+	  	 clearInterval(myVar);
+         document.getElementById("filesize").innerHTML = this.responseText;
+		 
+      }
+    };
+    xmlhttp.open("GET", "download.php?filename="+filename+"&videoId="+videoId, true);
+    xmlhttp.send();
+	checkDownloadProgress();
+}
+</script>
 
 </body>
 </html>
-
