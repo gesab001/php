@@ -4,8 +4,8 @@
 
 
 
-<input id="videoId" type="text">
-<input id="filename" type="text">
+<input id="videoId" type="text" placeholder="youtube url or videoId">
+<input id="filename" type="text" placeholder="output name">
 <button onclick="download()">Download</button>
 <div id="filesize"></div>
 <script>
