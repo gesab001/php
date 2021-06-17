@@ -43,6 +43,8 @@ function download() {
    filename = document.getElementById("filename").value;
 
    var videoId = document.getElementById("videoId").value;
+   window.location.href = "download.php?filename="+filename+"&videoId="+videoId;;
+/*
    var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -53,7 +55,8 @@ function download() {
     };
     xmlhttp.open("GET", "download.php?filename="+filename+"&videoId="+videoId, true);
     xmlhttp.send();
-	checkDownloadProgress();
+    checkDownloadProgress();
+*/
 }
 </script>
 

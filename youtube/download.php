@@ -8,7 +8,23 @@ $videoId =  $_GET['videoId'];
 $command = "youtube-dl -f 18 " . $videoId . " --output " . $filename;
 $output=null;
 $resultcode = null;
-exec($command, $output, $resultcode);
+#exec($command, $output, $resultcode);
+while (@ ob_end_flush()); // end all output buffers if any
+
+$proc = popen($command, 'r');
+
+
+
+
+$liveoutput = "";
+echo '<pre>';
+while (!feof($proc))
+{
+    $liveoutput = fread($proc, 4096);
+    echo $liveoutput;
+    @ flush();
+}
+echo '</pre>';
 
 if ($resultcode==0){
  echo ("<a href=$filename download=$filename><h2>$filename</h2></a><br>");
@@ -21,5 +37,6 @@ if ($resultcode==0){
   echo ("$x. <a href=$value download=$value>$value</a><br>");
  }
 }
+
 ?>
 
