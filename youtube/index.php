@@ -3,10 +3,13 @@
 <body>
 
 <button onclick="goBack()">Go Back</button>
->
+
 <h1>HolyTube Downloader</h1>
-<input id="videoId" type="text"  value="<?php echo $_GET['videoId'];?>" placeholder="youtube url or videoId">
-<input id="filename" type="text" placeholder="output name" value="<?php echo $_GET['filename'];?>">
+<label for="videoId">youtube url or videoId</label>
+<input id="videoId" type="text"  value="<?php echo $_GET['videoId'];?>" placeholder="youtube url or videoId"><br>
+<label for="filename">save video as</label>
+
+<input id="filename" type="text" placeholder="output name" value="<?php echo $_GET['filename'];?>"><br>
 <button onclick="download()">Download</button>
 <div id="filesize"></div>
 <script>
