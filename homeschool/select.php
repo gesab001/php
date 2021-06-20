@@ -1,10 +1,15 @@
 <?php
+
+function cmp($a, $b) {
+    return strcmp($a->letter, $b->letter);
+}
+
 $servername = "localhost";
 $username = "gesab001";
 $password = "ch5t8k4u";
 $dbname = "homeschool";
-$tablename = "science_lessons";
-
+$tablename = $_GET['subject'] . "_lessons";
+$year = $_GET['year'];
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
@@ -12,7 +17,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT title, letter, number, topic, resource FROM $tablename";
+$sql = "SELECT title, letter, number, topic, resource FROM $tablename where year = $year";
 $result = $conn->query($sql);
 $rows = array();
 $categories = new stdClass();
@@ -59,6 +64,7 @@ foreach ($categories as $obj) {
    }
    $result[]  = $obj;
 }
+usort($result, "cmp");
 echo json_encode($result);
 $conn->close();
 ?>
