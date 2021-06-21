@@ -16,7 +16,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "INSERT INTO $tablename (book,chapter,verse, word) VALUES ('$book', $chapter, $verse, '$word')";
+$sql = "INSERT INTO $tablename (book,chapter,verse, word) VALUES ('$book', $chapter, '$verse', '$word')";
 if ($conn->query($sql) === TRUE) {
   $last_id = $conn->insert_id;
   echo "New record created successfully. Last inserted ID is: " . $last_id;
