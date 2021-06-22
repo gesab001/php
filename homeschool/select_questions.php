@@ -1,72 +1,69 @@
 <?php
 
-function cmp($a, $b) {
-    return strcmp($a->letter, $b->letter);
-}
-
 $servername = "localhost";
 $username = "gesab001";
 $password = "ch5t8k4u";
 $dbname = "homeschool";
 $tablename = $_GET['subject'];
+$title = $_GET['title'];
+$topic = $_GET['topic'];
 $year = $_GET['year'];
 $letter = $_GET['letter'];
 $number = $_GET['number'];
+//echo $tablename . $year . $letter . $number;
+//echo $title;
+//echo $topic;
+
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
+}else{
+  //echo ("success");
 }
 
-$sql = "select title, year, letter, number, topic, question, answer, choice1, choice2, choice3 from $tablename where year=$year and letter='$letter' and number=$number";
+
+$sql = "select * from $tablename where title='$title' and topic='$topic'";
 $result = $conn->query($sql);
-$rows = array();
-$categories = new stdClass();
-$activities = array();
-$myObj = new stdClass();
-$activitiesObj = new stdClass();
-while($r = mysqli_fetch_assoc($result)) {
-     $letter  = $r['letter'];
-     $title = $r['title'];
-     $number = $r['number'];
-     $key = $letter;
-     $myObj -> key  = $key;
-     $myObj -> title = $title;
-     $myObj -> letter = $letter;
-     $myObj -> activities = array();
-     if (in_array($myObj, $rows)==false){
-        $rows[] = $myObj;
-        $categories -> $key = $myObj;
-        $myObj = new stdClass();
-     }
-     
-     $topic = $r['topic'];
-     $resource = $r['resource'];
-     $activitiesObj -> key = $key;
-     $activitiesObj -> number = $number;
-     $activitiesObj -> topic = $topic;
-     $activitiesObj -> resource = $resource;
-     $activities[] = $activitiesObj;
-     $activitiesObj = new stdClass();
 
+$questions = array();
+$choices = array();
+$questionitem = new stdClass();
+
+while($r = mysqli_fetch_assoc($result)) {
+     $question  = $r['question'];
+     $answer  = $r['answer'];
+     $choice1  = $r['choice1'];
+     $choice2  = $r['choice2'];
+     $choice3  = $r['choice3'];
+     $choice4  = $r['choice4'];
+     $choices[] = $choice1;
+     $choices[] = $choice2;
+     $choices[] = $choice3;
+     $choices[] = $choice4;
+     $questionitem -> question = $question;
+     $questionitem -> answer = $answer;
+     $questionitem -> choices = $choices;
+     $questions[] = $questionitem;
+     $questionitem = new stdClass();
+     $choices = array();
 }
-$jsonActivities = json_encode($activities);
-foreach ($activities as $value){
-  $key = $value -> key;
-  $categories ->$key -> activities [] = $value;
-}
-$result = array();
-$jsonCategories = json_encode($categories);
-foreach ($categories as $obj) {
-   unset($obj->key); 
-   $total = count($obj ->activities);  
-   for ($x = 0; $x < $total; $x++) {
-     unset($obj ->activities[$x] -> key);
-   }
-   $result[]  = $obj;
-}
-usort($result, "cmp");
-echo json_encode($result);
+$response = new stdClass();
+$icons = array();
+$iconObj = new stdClass();
+$iconObj -> title = "ambulance";
+$iconObj -> name = "fa fa-ambulance";
+$icons[] = $iconObj;
+$response -> icons = $icons;
+
+$code = $tablename[0] . $year . $letter . $number;
+$questions_obj  = new stdClass();
+$questions_obj -> type = "fill_in_the_blank";
+$questions_obj -> questions = $questions;
+$response -> $code = $questions_obj;
+
+echo json_encode($response);
+
 $conn->close();
 ?>
