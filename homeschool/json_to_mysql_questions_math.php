@@ -20,11 +20,11 @@ if ($conn->connect_error) {
 }
 
 
-$subject = "science";
-$year = 1;
-$letter = "a";
+$subject = "math";
+$year = 2;
+$letter = "c";
 $number = 1;
-$title = "big book of the body";
+$title = "";
 $topic = "what are you made of?";
 
 $sql = "";
@@ -38,7 +38,7 @@ foreach($questions as $value){
   $choice3  = mysqli_real_escape_string($conn, $choices[2]);
   $choice4  = mysqli_real_escape_string($conn, $choices[3]);
 
-  $sql  .=  "insert into science (year, title, letter, number, topic, question, answer, choice1, choice2, choice3, choice4, type) values($year, '$title', '$letter', $number, '$topic', '$question', '$answer', '$choice1', '$choice2', '$choice3', '$choice4', '$type'); ";
+  $sql  .=  "insert into $subject (year, title, letter, number, topic, question, answer, choice1, choice2, choice3, choice4, type) values($year, '$title', '$letter', $number, '$topic', '$question', '$answer', '$choice1', '$choice2', '$choice3', '$choice4', '$type'); ";
 }
 /*$sql  .=  "insert into $subject (year, title, letter, number, topic, question, answer, choice1, choice2, choice3, type)" .
  "values($year, '$title', '$letter', $number, '$topic', '$question', '$answer', '$choice1', '$choice2', '$choice3', '$type');";
